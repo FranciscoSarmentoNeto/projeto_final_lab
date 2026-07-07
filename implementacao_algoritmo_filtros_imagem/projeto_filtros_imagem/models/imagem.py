@@ -1,14 +1,4 @@
-"""
-Classe Imagem
--------------
-Representa um arquivo de imagem (.jpg ou .png) manipulado pelo programa.
 
-Responsabilidades:
-- Guardar o caminho e o nome do arquivo.
-- Validar se a extensão é suportada (.jpg, .jpeg, .png).
-- Carregar a imagem em memória usando a biblioteca Pillow (PIL).
-- Salvar uma nova imagem (por exemplo, após aplicar um filtro).
-"""
 
 import os
 from PIL import Image as PILImage, UnidentifiedImageError

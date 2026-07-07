@@ -1,12 +1,10 @@
-# Log de erros gerado em tempo de execução (não deve ir para o repositório)
-erros.log
+
 
 # Pastas geradas automaticamente pelo programa
 imagens_filtradas/
+
 
 # Arquivos de cache do Python
 __pycache__/
 *.pyc
 
-# Ambiente virtual
-venv/

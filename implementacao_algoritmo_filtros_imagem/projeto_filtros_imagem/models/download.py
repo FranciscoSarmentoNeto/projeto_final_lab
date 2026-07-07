@@ -1,10 +1,4 @@
-"""
-Classe Download
-----------------
-Responsável por baixar uma imagem publicada na internet (URL) e
-salvá-la localmente no diretório atual, para que depois possa ser
-tratada pela classe Imagem.
-"""
+
 
 import os
 import requests

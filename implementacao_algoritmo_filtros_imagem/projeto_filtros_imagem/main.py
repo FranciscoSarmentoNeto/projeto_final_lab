@@ -1,17 +1,4 @@
-"""
-Programa Principal
--------------------
-Integra as classes Imagem, Download e os Filtros, exibindo um menu
-interativo no terminal com as opções:
 
-1. Informar o caminho da imagem (local ou URL)
-2. Escolher o filtro a ser aplicado
-3. Listar arquivos de imagens do diretório corrente
-4. Sair
-
-Para executar:
-    python main.py
-"""
 
 import os
 import logging
@@ -62,7 +49,7 @@ class Principal:
 
         try:
             if Download.eh_url(entrada):
-                print("\nDetectada URL. Baixando imagem...")
+                print("\nDetectada URL. Baixando imagem...\n")
                 os.makedirs(PASTA_REPOSITORIO_FOTOS, exist_ok=True)
                 download = Download(diretorio_destino=PASTA_REPOSITORIO_FOTOS)
                 caminho_local = download.baixar(entrada)
@@ -194,11 +181,7 @@ class Principal:
         pausar()
 
     def listar_imagens_filtradas(self):
-        """
-        Percorre a pasta PASTA_IMAGENS_FILTRADAS e informa ao usuário quais
-        arquivos de imagem estão lá dentro — ou seja, quais fotos já foram
-        processadas por algum filtro pelo terminal.
-        """
+
         limpar_tela()
         print("=" * 55)
         print("        IMAGENS JÁ FILTRADAS")
