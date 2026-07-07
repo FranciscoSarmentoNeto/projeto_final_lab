@@ -9,20 +9,22 @@ imagens `.jpg`/`.png` locais ou baixadas de uma URL pública.
 ## Estrutura do projeto
 
 ```
-projeto_filtros_imagem/
+implementacao_algoritmos_filtros_imagem/
 ├── main.py                  # Classe Principal: menu interativo do programa
 ├── requirements.txt
 ├── models/
 │   ├── imagem.py             # Classe Imagem
 │   └── download.py           # Classe Download
-└── filtros/
-    ├── filtro_base.py         # Classe abstrata FiltroBase
-    ├── escala_cinza.py        # FiltroEscalaCinza
-    ├── preto_branco.py        # FiltroPretoBranco
-    ├── cartoon.py             # FiltroCartoon
-    ├── negativo.py            # FiltroNegativo
-    ├── contorno.py            # FiltroContorno
-    └── blur.py                # FiltroBlur
+├── filtros/
+│   ├── filtro_base.py         # Classe abstrata FiltroBase
+│   ├── escala_cinza.py        # FiltroEscalaCinza
+│   ├── preto_branco.py        # FiltroPretoBranco
+│   ├── cartoon.py             # FiltroCartoon
+│   ├── negativo.py            # FiltroNegativo
+│   ├── contorno.py            # FiltroContorno
+│   └── blur.py                # FiltroBlur
+├── imagens_filtradas/
+└── repositorio_de_fotos
 ```
 
 ## Como funciona (orientação a objetos)
@@ -40,18 +42,6 @@ projeto_filtros_imagem/
 - **`Principal`** (`main.py`): integra tudo e exibe o menu com as 4 opções
   pedidas no enunciado.
 
-## Imagens de exemplo
-
-A pasta `imagens_exemplo/` contém duas imagens sintéticas (geradas por
-código, sem direitos autorais) para testar os filtros rapidamente durante
-a apresentação, sem depender de internet ou de digitar um caminho:
-
-- `imagens_exemplo/paisagem_exemplo.png`
-- `imagens_exemplo/retrato_exemplo.png`
-
-Fique à vontade para adicionar fotos próprias (ou de bancos gratuitos como
-Unsplash/Pexels) nessa mesma pasta para demonstrar os filtros em fotos
-reais.
 
 ## Instalação
 
@@ -122,22 +112,6 @@ baixada é salva automaticamente dentro de `repositorio_de_fotos/`
   pausa com "Pressione Enter para continuar..." antes de voltar ao menu,
   garantindo que o usuário sempre consiga ler a mensagem antes da tela
   ser limpa novamente.
-
-## Registro de erros (log)
-
-Todo erro capturado pelo programa é tratado em dois níveis:
-
-1. **Na tela**, o usuário recebe uma mensagem com o tipo do erro e um
-   "motivo provável" em português, explicando o que pode ter causado o
-   problema (ex: caminho incorreto, imagem corrompida, sem conexão com a
-   internet, etc.).
-2. **No arquivo `erros.log`**, gerado automaticamente na primeira vez que
-   ocorrer um erro. Cada linha tem data/hora, contexto (onde ocorreu) e a
-   mensagem técnica da exceção — útil para depuração e para mostrar na
-   apresentação que o programa possui rastreabilidade de falhas.
-
-Esse arquivo está no `.gitignore` e não deve ser versionado no
-repositório.
 
 ## Tratamento de erros
 
