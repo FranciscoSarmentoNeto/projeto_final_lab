@@ -123,7 +123,7 @@ projeto_final_lab/
 
 
 
-  ## Instalação
+## Instalação
 
 Pré-requisito: Python 3.10 ou superior.
 
