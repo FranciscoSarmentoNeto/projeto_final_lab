@@ -1,53 +1,139 @@
-# Programa de Filtros de Imagem
+# IMPLEMENTAÇÃO DO TRABALHO FINAL DA DISCIPLINA DE LABORATÓRIO DE PROGRAMAÇÃO
 
-Projeto da 3ª Avaliação — Laboratório de Programação.
+**Projeto da 3ª Avaliação — Laboratório de Programação (2026.1)**
+Universidade Federal do Piauí (UFPI) — Centro de Ciências da Natureza (CCN)
+Curso de Bacharelado em Ciência da Computação
+Professor: Doutor Armando Soares Sousa
 
-Programa em Python, orientado a objetos, que aplica filtros (Escala de
-Cinza, Preto e Branco, Cartoon, Foto Negativa, Contorno e Blurred) em
-imagens `.jpg`/`.png` locais ou baixadas de uma URL pública.
+## Equipe 06 - Integrantes:
+* Francisco Sarmento Neto
+* Hudson Iago Castro Rêgo
+* Luís Fernando Amorim Figueiredo da Silva
+* Maria Eduarda de Oliveira Sousa Silva
+* Sherlyson Memória de Sousa
 
-## Estrutura do projeto
+## Trabalho Proposto
+- Está presente nesse repositório como "Trabalho_Final_Proposto" anexado.
+
+
+
+## Estrutura do Projeto
+
+A árvore de diretórios do repositório reflete a seguinte organização modular:
+
+```text
+projeto_final_lab/
+├── README.md                                         # Documentação do projeto
+├── Trabalho_Final_Proposto.pdf                        # Enunciado oficial do projeto
+│
+├── imagens_filtradas/                                # Saída global de testes das imagens processadas
+│   ├── 9c98fba4828d6739e4c35635f251fb18d81568657a..._blur.jpg
+│   ├── 9c98fba4828d6739e4c35635f251fb18d81568657a..._cartoon.jpg
+│   ├── 9c98fba4828d6739e4c35635f251fb18d81568657a..._cinza.jpg
+│   ├── 9c98fba4828d6739e4c35635f251fb18d81568657a..._contorno.jpg
+│   ├── 9c98fba4828d6739e4c35635f251fb18d81568657a..._negativo.jpg
+│   └── 9c98fba4828d6739e4c35635f251fb18d81568657a..._pb.jpg
+│
+├── repositorio_de_fotos/                             # Banco local de imagens originais para teste
+│   ├── 9c98fba4828d6739e4c35635f251fb18d81568657a...jpg
+│   ├── imagem_1.jpg
+│   ├── imagem_2.jpg
+│   └── [imagem_3.jpg ... imagem_9.jpg]
+│
+└── implementacao_algoritmo_filtros_imagem/
+    └── projeto_filtros_imagem/                       # Core da aplicação em Python
+        ├── main.py                                   # Classe Principal (Menu Interativo e Fluxo)
+        ├── requirements.txt                          # Dependências externas do projeto
+        ├── .gitignore                                # Arquivo de omissão de logs e caches do Git
+        ├── imagens_filtradas/                        # Cache local para salvamento interno de filtros
+        │
+        ├── models/                                   # Pacote das classes de dados e utilitários
+        │   ├── __init__.py
+        │   ├── download.py                           # Classe Download (Manipulação de requisições web)
+        │   └── imagem.py                             # Classe Imagem (Mapeamento e validação de arquivos)
+        │
+        └── filtros/                                  # Pacote contendo o polimorfismo dos filtros
+            ├── __init__.py                           # Registro interno de filtros ativos
+            ├── filtro_base.py                        # Classe abstrata/mãe FiltroBase
+            ├── blur.py                               # Implementação do Modo Blurred
+            ├── cartoon.py                            # Implementação do Filtro Cartoon
+            ├── contorno.py                           # Implementação do Modo Contorno
+            ├── escala_cinza.py                       # Implementação do Filtro Escala de Cinza
+            ├── negativo.py                           # Implementação do Modo Foto Negativa
+            └── preto_branco.py                       # Implementação do Filtro Preto e Branco
+```
+
+## Funcionalidades
+
+| | Funcionalidade | Descrição |
+|---|---|---|
+| 1 | Informar o caminho da imagem | Aceita caminho local **ou** URL pública; detecta automaticamente qual é qual |
+| 2 | Escolher o filtro a ser aplicado | 6 filtros disponíveis, aplicados sobre a imagem carregada |
+| 3 | Listar fotos disponíveis | Lista os arquivos `.jpg`/`.png` da pasta `repositorio_de_fotos/` |
+| 4 | Listar imagens já filtradas | Lista os arquivos `.jpg`/`.png` da pasta `imagens_filtradas/` |
+| 5 | Sair | Encerra o programa |
+
+
+### Filtros disponíveis
+
+| Filtro | Efeito |
+|---|---|
+| **Escala de Cinza** | Converte a imagem para tons de cinza |
+| **Preto e Branco** | Binariza a imagem (cada pixel vira preto ou branco) |
+| **Cartoon** | Simula um desenho animado (cores "chapadas" + contorno em traço) |
+| **Foto Negativa** | Inverte todas as cores da imagem |
+| **Contorno** | Detecta e realça as bordas dos objetos |
+| **Blurred** | Aplica desfoque gaussiano |
+
+
+
+## Arquitetura implementada:
 
 ```
-implementacao_algoritmos_filtros_imagem/
-├── main.py                  # Classe Principal: menu interativo do programa
-├── requirements.txt
-├── models/
-│   ├── imagem.py             # Classe Imagem
-│   └── download.py           # Classe Download
-├── filtros/
-│   ├── filtro_base.py         # Classe abstrata FiltroBase
-│   ├── escala_cinza.py        # FiltroEscalaCinza
-│   ├── preto_branco.py        # FiltroPretoBranco
-│   ├── cartoon.py             # FiltroCartoon
-│   ├── negativo.py            # FiltroNegativo
-│   ├── contorno.py            # FiltroContorno
-│   └── blur.py                # FiltroBlur
-├── imagens_filtradas/
-└── repositorio_de_fotos/
+                      ┌───────────────────┐
+                      │     Principal     │  (main.py)
+                      │  menu interativo  │
+                      └─────────┬─────────┘
+                                │ usa
+            ┌───────────────────┼───────────────────┐
+            ▼                   ▼                   ▼
+     ┌─────────────┐     ┌─────────────┐     ┌───────────────┐
+     │   Imagem    │     │  Download   │     │  FiltroBase   │  (abstrata)
+     │ carrega/    │     │ baixa da    │     │ aplicar(img)  │
+     │ salva PIL   │     │ internet    │     └───────┬───────┘
+     └─────────────┘     └─────────────┘             │ herdam
+                                          ┌───────────┼─────────────┬───────────┬────────────┬───────────┐
+                                          ▼           ▼             ▼           ▼            ▼           ▼
+                                    EscalaCinza  PretoBranco    Cartoon    Negativo      Contorno      Blur
 ```
 
-## Como funciona (orientação a objetos)
 
-- **`Imagem`** (`models/imagem.py`): representa o arquivo de imagem. Valida
-  a extensão, carrega o arquivo em memória (via Pillow) e salva o
-  resultado de um filtro no disco.
+- **`Imagem`** (`models/imagem.py`): representa o arquivo de imagem.
+  Valida a extensão (`.jpg`/`.jpeg`/`.png`), carrega o arquivo em memória
+  via Pillow e salva o resultado de um filtro em uma pasta de destino.
 - **`Download`** (`models/download.py`): detecta se o caminho informado é
-  uma URL e, se for, baixa a imagem e a salva localmente.
-- **`FiltroBase`** (`filtros/filtro_base.py`): classe abstrata que define o
-  método `aplicar(imagem_pil)`. Cada filtro concreto (`FiltroEscalaCinza`,
-  `FiltroPretoBranco`, `FiltroCartoon`, `FiltroNegativo`, `FiltroContorno`,
-  `FiltroBlur`) implementa essa mesma interface — por isso o programa
-  principal consegue tratá-los de forma genérica (polimorfismo).
-- **`Principal`** (`main.py`): integra tudo e exibe o menu com as 4 opções
-  pedidas no enunciado.
+  uma URL (`Download.eh_url`) e, se for, baixa a imagem e a salva
+  localmente, validando o `Content-Type` da resposta.
+- **`FiltroBase`** (`filtros/filtro_base.py`): classe abstrata (`ABC`) que
+  define o contrato `aplicar(imagem_pil) -> imagem_pil`. Cada filtro
+  concreto implementa essa mesma interface, permitindo que o programa
+  principal trate qualquer filtro de forma genérica (**polimorfismo**).
+- **`Principal`** (`main.py`): integra todas as classes acima e conduz o
+  menu interativo do usuário.
 
 
-## Instalação
+
+  ## Instalação
+
+Pré-requisito: Python 3.10 ou superior.
 
 ```bash
+git clone <link-do-repositorio>
+cd projeto_filtros_imagem
+
 python -m venv venv
 source venv/bin/activate      # Windows: venv\Scripts\activate
+
 pip install -r requirements.txt
 ```
 
@@ -61,8 +147,8 @@ python main.py
 
 ```
 1. Informar o caminho da imagem
-   -> ./fotos/gato.jpg
-   -> ou: https://exemplo.com/imagens/gato.png
+   -> ./repositorio_de_fotos/gato.jpg
+   -> ou: https://exemplo.com/imagens/gato.png   (baixada automaticamente)
 
 2. Escolher o filtro a ser aplicado
    -> 1. Escala de Cinza
@@ -72,62 +158,25 @@ python main.py
    -> 5. Contorno
    -> 6. Blurred
 
-   Gera, por exemplo: gato_cinza.jpg (salvo automaticamente na pasta
-   "imagens_filtradas/", que é criada pelo programa se ainda não existir)
+   Gera, por exemplo: gato_cinza.jpg, salvo automaticamente em
+   imagens_filtradas/
 
-3. Listar fotos disponíveis em "repositorio_de_fotos/"
-4. Listar imagens já filtradas em "imagens_filtradas/"
+3. Listar fotos disponíveis em 'repositorio_de_fotos/'
+4. Listar imagens já filtradas em 'imagens_filtradas/'
 5. Sair
 ```
-
-## Pasta de saída das imagens filtradas
-
-Toda imagem gerada por um filtro é salva automaticamente na pasta
-`imagens_filtradas/` (o programa cria essa pasta sozinho, caso ela ainda
-não exista). Para mudar o nome/local dessa pasta, basta alterar a
-constante `PASTA_IMAGENS_FILTRADAS` no início do arquivo `main.py`.
-
-## Pasta com as fotos disponíveis
-
-A opção 3 do menu (**Listar fotos disponíveis**) lista apenas os arquivos
-`.jpg`/`.png` que estiverem dentro da pasta `repositorio_de_fotos/`. Essa
-pasta **não** é criada automaticamente ao iniciar o programa — vocês devem
-criá-la e colocar as fotos de teste dentro dela (ou deixar o programa
-criá-la sozinho ao baixar a primeira imagem de uma URL, veja abaixo).
-Para mudar o nome dessa pasta, altere a constante
-`PASTA_REPOSITORIO_FOTOS` em `main.py`.
-
-Sempre que o usuário informar uma **URL** na opção 1 do menu, a imagem
-baixada é salva automaticamente dentro de `repositorio_de_fotos/`
-(a pasta é criada nesse momento, se ainda não existir).
-
-## Experiência do usuário (limpar tela e pausas)
-
-- A tela de apresentação da equipe aparece **uma única vez**, ao iniciar o
-  programa.
-- Antes de cada tela (menu principal, informar caminho, escolher filtro,
-  listar fotos), o terminal é limpo (`limpar_tela()`), para não acumular
-  informação antiga na tela.
-- Depois de qualquer ação (sucesso, erro ou opção inválida), o programa
-  pausa com "Pressione Enter para continuar..." antes de voltar ao menu,
-  garantindo que o usuário sempre consiga ler a mensagem antes da tela
-  ser limpa novamente.
-
-## Tratamento de erros
-
-O programa trata (com mensagens claras, sem travar):
-- extensão de arquivo inválida;
-- arquivo/caminho inexistente;
-- arquivo corrompido ou que não é uma imagem válida;
-- falhas de rede/URL inválida no download;
-- opções inválidas no menu.
 
 ## Como estender (adicionar um novo filtro)
 
 1. Criar um novo arquivo em `filtros/`, por exemplo `sepia.py`, com uma
    classe que herda de `FiltroBase` e implementa `aplicar(imagem_pil)`.
-2. Registrar essa classe no dicionário `FILTROS_DISPONIVEIS` em
+2. Registrar essa classe no dicionário `FILTROS_DISPONIVEIS`, em
    `filtros/__init__.py`.
 
-Nenhuma outra parte do código precisa mudar — é o benefício de usar
-orientação a objetos e polimorfismo aqui.
+
+## Dependências
+
+```
+Pillow>=10.0.0
+requests>=2.31.0
+```
