@@ -24,7 +24,7 @@ implementacao_algoritmos_filtros_imagem/
 │   ├── contorno.py            # FiltroContorno
 │   └── blur.py                # FiltroBlur
 ├── imagens_filtradas/
-└── repositorio_de_fotos
+└── repositorio_de_fotos/
 ```
 
 ## Como funciona (orientação a objetos)
